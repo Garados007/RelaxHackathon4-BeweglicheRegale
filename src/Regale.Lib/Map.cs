@@ -20,6 +20,12 @@ public class Map
         data = new Field[Width * Height];
     }
 
+    public Field this[uint x, uint y]
+    {
+        get => this[new(x, y)];
+        set => this[new(x, y)] = value;
+    }
+
     public Field this[Position position]
     {
         get => data.Span[GetOffset(position)];
@@ -34,5 +40,21 @@ public class Map
             throw new ArgumentOutOfRangeException(nameof(position), "Y value is larger than height");
 
         return (int)(position.Y * Width + position.X);
+    }
+
+    public IEnumerable<(Field field, Position position)> GetFields()
+    {
+        uint x = 0;
+        uint y = 0;
+        for (int i = 0; i < data.Length; ++i)
+        {
+            yield return (data.Span[i], new(x, y));
+            x++;
+            if (x >= Width)
+            {
+                x = 0;
+                y++;
+            }
+        }
     }
 }
