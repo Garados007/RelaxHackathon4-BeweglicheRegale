@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Regale", "Regale\Regale.csproj", "{B82A6C15-BB1F-4CEC-AFA7-B61FE06D64CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Regale.Lib", "Regale.Lib\Regale.Lib.csproj", "{9F1EF8E1-C820-4F9D-800B-4F56255A3789}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Regale.Test", "Regale.Test\Regale.Test.csproj", "{3613A3E0-D69D-46EC-9426-3C50E4B5CC5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B82A6C15-BB1F-4CEC-AFA7-B61FE06D64CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82A6C15-BB1F-4CEC-AFA7-B61FE06D64CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82A6C15-BB1F-4CEC-AFA7-B61FE06D64CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82A6C15-BB1F-4CEC-AFA7-B61FE06D64CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F1EF8E1-C820-4F9D-800B-4F56255A3789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F1EF8E1-C820-4F9D-800B-4F56255A3789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F1EF8E1-C820-4F9D-800B-4F56255A3789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F1EF8E1-C820-4F9D-800B-4F56255A3789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3613A3E0-D69D-46EC-9426-3C50E4B5CC5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3613A3E0-D69D-46EC-9426-3C50E4B5CC5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3613A3E0-D69D-46EC-9426-3C50E4B5CC5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3613A3E0-D69D-46EC-9426-3C50E4B5CC5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
