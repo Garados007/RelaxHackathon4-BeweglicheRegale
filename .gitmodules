@@ -1,0 +1,3 @@
+[submodule "vendor/aufgabe"]
+	path = vendor/aufgabe
+	url = https://gitlab-hackathon.relaxdays.cloud/aufgaben/summer-2023-bewegliche-regale.git
