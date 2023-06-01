@@ -1,8 +1,9 @@
 namespace Regale;
 
-public class Map
+public class Map<T>
+    where T : struct
 {
-    private readonly Memory<Field> data;
+    private readonly Memory<T> data;
 
     public int Width { get; }
 
@@ -17,16 +18,16 @@ public class Map
 
         Width = width;
         Height = height;
-        data = new Field[Width * Height];
+        data = new T[Width * Height];
     }
 
-    public Field this[uint x, uint y]
+    public T this[uint x, uint y]
     {
         get => this[new(x, y)];
         set => this[new(x, y)] = value;
     }
 
-    public Field this[Position position]
+    public T this[Position position]
     {
         get => data.Span[GetOffset(position)];
         set => data.Span[GetOffset(position)] = value;
@@ -42,7 +43,7 @@ public class Map
         return (int)(position.Y * Width + position.X);
     }
 
-    public IEnumerable<(Field field, Position position)> GetFields()
+    public IEnumerable<(T field, Position position)> GetFields()
     {
         uint x = 0;
         uint y = 0;
