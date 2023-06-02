@@ -98,7 +98,15 @@ public sealed class Orchestration<TCost, TRouting>
                 list.Add((new(x, y), cost, depot));
             }
         }
-        list.Sort((a, b) => a.cost.CompareTo(b.cost));
+        list.Sort(CompareCost);
         return list;
+    }
+
+    private static int CompareCost((Position pos, int cost, Position depot) a, (Position pos, int cost, Position depot) b)
+    {
+        var res = a.cost.CompareTo(b.cost);
+        if (res != 0)
+            return res;
+        else return a.pos.CompareTo(b.pos);
     }
 }
