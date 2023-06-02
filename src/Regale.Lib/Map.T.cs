@@ -60,6 +60,11 @@ public class Map<T>
         set => data.Span[GetOffset(position)] = value;
     }
 
+    public bool Contains(Position position)
+    {
+        return position.X >= 0 && position.X < Width && position.Y >= 0 && position.Y < Height;
+    }
+
     public Span<T> GetRow(int y)
     {
         if (y < 0 || y >= Height)
@@ -70,10 +75,8 @@ public class Map<T>
 
     private int GetOffset(Position position)
     {
-        if (position.X < 0 || position.X >= Width)
-            throw new ArgumentOutOfRangeException(nameof(position), $"invalid X coordinate {position.X} (0 .. {Width - 1})");
-        if (position.Y < 0 || position.Y >= Height)
-            throw new ArgumentOutOfRangeException(nameof(position), $"invalid Y coordinate {position.Y} (0 .. {Height - 1})");
+        if (!Contains(position))
+            throw new ArgumentOutOfRangeException(nameof(position), $"does not contain position {position} (bounds: {Width}:{Height})");
 
         return position.Y * Width + position.X;
     }
@@ -104,7 +107,7 @@ public class Map<T>
     public Position? GetTargetPosition(Position start, Position delta)
     {
         var t = start + delta;
-        if (t.X >= 0 && t.X < Width && t.Y >= 0 && t.Y < Height)
+        if (Contains(t))
             return t;
         else return null;
     }
@@ -114,7 +117,7 @@ public class Map<T>
         foreach (var delta in GetPossibleNeighbourDelta(target - start))
         {
             var t = start + delta;
-            if (t.X >= 0 && t.X < Width && t.Y >= 0 && t.Y < Height)
+            if (Contains(t))
                 yield return t;
         }
     }

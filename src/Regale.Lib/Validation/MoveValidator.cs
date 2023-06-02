@@ -18,8 +18,8 @@ public sealed class MoveValidator
     public MoveValidator(Map map)
     {
         Map = map;
-        MoveMap = new(map.Width, map.Width);
-        receivingMap = new(map.Width, map.Width);
+        MoveMap = new(map.Width, map.Height);
+        receivingMap = new(map.Width, map.Height);
     }
 
     /// <summary>
