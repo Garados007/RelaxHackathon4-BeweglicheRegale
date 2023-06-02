@@ -33,6 +33,14 @@ public class Map<T>
         set => data.Span[GetOffset(position)] = value;
     }
 
+    public Span<T> GetRow(uint y)
+    {
+        if (y >= Height)
+            throw new ArgumentOutOfRangeException(nameof(y));
+        var offset = ((int)y) * Width;
+        return data.Span.Slice(offset, Width);
+    }
+
     private int GetOffset(Position position)
     {
         if (position.X >= Width)
