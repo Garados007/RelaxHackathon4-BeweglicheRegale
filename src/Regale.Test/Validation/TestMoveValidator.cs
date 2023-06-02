@@ -25,16 +25,16 @@ public class TestMoveValidator
         Assert.IsFalse(validator.Apply(new(2, 4), Direction.Up)); // collides in between
         Assert.IsFalse(validator.Apply(new(4, 4), Direction.Up)); // collides with target
         // verify directions
-        for (uint y = 0; y < 2; ++y)
-            for (uint x = 0; x < 5; ++x)
+        for (int y = 0; y < 2; ++y)
+            for (int x = 0; x < 5; ++x)
                 Assert.AreEqual(Direction.None, validator.MoveMap[x, y]);
         Assert.AreEqual(Direction.None,  validator.MoveMap[0, 2]);
         Assert.AreEqual(Direction.Right, validator.MoveMap[1, 2]);
         Assert.AreEqual(Direction.Right, validator.MoveMap[2, 2]);
         Assert.AreEqual(Direction.Right, validator.MoveMap[3, 2]);
         Assert.AreEqual(Direction.None,  validator.MoveMap[4, 2]);
-        for (uint y = 3; y < 4; ++y)
-            for (uint x = 0; x < 5; ++x)
+        for (int y = 3; y < 4; ++y)
+            for (int x = 0; x < 5; ++x)
                 Assert.AreEqual(Direction.None, validator.MoveMap[x, y]);
     }
 }

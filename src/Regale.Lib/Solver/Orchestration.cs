@@ -87,10 +87,10 @@ public sealed class Orchestration<TCost, TRouting>
     private List<(Position pos, int cost, Position depot)> GetPresents()
     {
         var list = new List<(Position pos, int cost, Position depot)>();
-        for (uint y = 0; y < primary.Height; ++y)
+        for (int y = 0; y < primary.Height; ++y)
         {
             var row = primary.GetRow(y);
-            for (uint x = 0; x < primary.Width; ++x)
+            for (int x = 0; x < primary.Width; ++x)
             {
                 if (row[(int)x] != Field.Present)
                     continue;

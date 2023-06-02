@@ -46,11 +46,11 @@ public class Map<T>
             if (data[y].Length != Width)
                 throw new ArgumentException($"width of row {y + 1} doesn't match", nameof(data));
             for (int x = 0; x < Width; ++x)
-                this[(uint)x, (uint)y] = data[y][x];
+                this[x, y] = data[y][x];
         }
     }
 
-    public T this[uint x, uint y]
+    public T this[int x, int y]
     {
         get => this[new(x, y)];
         set => this[new(x, y)] = value;
@@ -62,28 +62,28 @@ public class Map<T>
         set => data.Span[GetOffset(position)] = value;
     }
 
-    public Span<T> GetRow(uint y)
+    public Span<T> GetRow(int y)
     {
-        if (y >= Height)
+        if (y < 0 || y >= Height)
             throw new ArgumentOutOfRangeException(nameof(y));
-        var offset = ((int)y) * Width;
+        var offset = y * Width;
         return data.Span.Slice(offset, Width);
     }
 
     private int GetOffset(Position position)
     {
-        if (position.X >= Width)
-            throw new ArgumentOutOfRangeException(nameof(position), "X value is larger than width");
-        if (position.Y >= Height)
-            throw new ArgumentOutOfRangeException(nameof(position), "Y value is larger than height");
+        if (position.X < 0 || position.X >= Width)
+            throw new ArgumentOutOfRangeException(nameof(position), "invalid X coordinate");
+        if (position.Y < 0 || position.Y >= Height)
+            throw new ArgumentOutOfRangeException(nameof(position), "invalid Y coordinate");
 
-        return (int)(position.Y * Width + position.X);
+        return position.Y * Width + position.X;
     }
 
     public IEnumerable<(T field, Position position)> GetFields()
     {
-        uint x = 0;
-        uint y = 0;
+        int x = 0;
+        int y = 0;
         for (int i = 0; i < data.Length; ++i)
         {
             yield return (data.Span[i], new(x, y));
@@ -104,12 +104,11 @@ public class Map<T>
     /// <param name="dx"></param>
     /// <param name="dy"></param>
     /// <returns></returns>
-    public Position? GetTargetPosition(Position start, int dx, int dy)
+    public Position? GetTargetPosition(Position start, Position delta)
     {
-        var tx = start.X + dx;
-        var ty = start.Y + dy;
-        if (tx >= 0 && tx < Width && ty >= 0 && ty < Height)
-            return new((uint)tx, (uint)ty);
+        var t = start + delta;
+        if (t.X >= 0 && t.X < Width && t.Y >= 0 && t.Y < Height)
+            return t;
         else return null;
     }
 }
