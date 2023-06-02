@@ -9,6 +9,34 @@ public class MoveMap : Map<Direction>
     {
     }
 
+    /// <summary>
+    /// Apply the current movement to the map
+    /// </summary>
+    /// <param name="start">the previous state of the map. This map remains unchanged.</param>
+    /// <param name="target">the new state of the map.</param>
+    public void ApplyMovement(Map start, Map target)
+    {
+        // cleanup target map
+        target.Fill(Field.None);
+        // iterate all positions and move data
+        for (uint y = 0; y < Height; ++y)
+        {
+            var row = GetRow(y);
+            for (uint x = 0; x < Width; ++x)
+            {
+                var dir = row[(int)x];
+                var sourceData = start[x, y];
+                if (dir == Direction.None && sourceData == Field.None)
+                    continue;
+                var (dx, dy) = dir.GetDelta();
+                var targetPos = GetTargetPosition(new(x, y), dx, dy);
+                if (targetPos is null)
+                    continue;
+                target[targetPos.Value] = start[x, y];
+            }
+        }
+    }
+
     public void Save(Utf8JsonWriter writer)
     {
         var sb = new StringBuilder(Width * 4 + 2);
