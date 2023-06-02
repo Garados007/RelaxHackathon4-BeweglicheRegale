@@ -36,4 +36,16 @@ public static class Extensions
         }
         return min;
     }
+
+    public static Direction GetDirection(this Position position)
+    {
+        return position switch
+        {
+            { X: 0, Y: < 0 } => Direction.Up,
+            { X: 0, Y: > 0 } => Direction.Down,
+            { X: < 0, Y: 0 } => Direction.Left,
+            { X: > 0, Y: 0 } => Direction.Right,
+            _ => Direction.None,
+        };
+    }
 }

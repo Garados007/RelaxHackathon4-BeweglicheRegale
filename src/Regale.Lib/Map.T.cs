@@ -1,5 +1,3 @@
-using OneOf.Types;
-
 namespace Regale;
 
 public class Map<T>
@@ -109,5 +107,50 @@ public class Map<T>
         if (t.X >= 0 && t.X < Width && t.Y >= 0 && t.Y < Height)
             return t;
         else return null;
+    }
+
+    public IEnumerable<Position> GetPreferredNeighbours(Position start, Position target)
+    {
+        foreach (var delta in GetPossibleNeighbourDelta(target - start))
+        {
+            var t = start + delta;
+            if (t.X >= 0 && t.X < Width && t.Y >= 0 && t.Y < Height)
+                yield return t;
+        }
+    }
+
+    private static IEnumerable<Position> GetPossibleNeighbourDelta(Position delta)
+    {
+        switch (delta)
+        {
+            case { X: 0, Y: < 0 }: // up
+                yield return new(0, -1);
+                break;
+            case { X: > 0, Y: < 0 }: // up-right
+                yield return new(0, -1);
+                yield return new(1, 0);
+                break;
+            case { X: > 0, Y: 0 }: // right
+                yield return new(1, 0);
+                break;
+            case { X: > 0, Y: > 0 }: // down-right
+                yield return new(0, 1);
+                yield return new(1, 0);
+                break;
+            case { X: 0, Y: > 0 }: // down
+                yield return new(0, 1);
+                break;
+            case { X: < 0, Y: > 0 }: // down-left
+                yield return new(0, 1);
+                yield return new(-1, 0);
+                break;
+            case { X: < 0, Y: 0 }: // left
+                yield return new(-1, 0);
+                break;
+            case { X: < 0, Y: < 0 }: // up-left
+                yield return new(0, -1);
+                yield return new(-1, 0);
+                break;
+        }
     }
 }
