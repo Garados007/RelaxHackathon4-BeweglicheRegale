@@ -54,6 +54,11 @@ jobs:
           path: bin
       - name: Make binary executable
         run: chmod +x bin/Regale
+      - run: ls -la
+      - run: ls -la vendor
+      - run: ls -la vendor/aufgabe
+      - run: ls -la vendor/aufgabe/solution-checker
+      - run: ls -la vendor/aufgabe/solution-checker/input
       - name: Run test
         run: bin/Regale "vendor/aufgabe/solution-checker/input/instance${{ matrix.num }}.json -"
 
