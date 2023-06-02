@@ -60,7 +60,7 @@ jobs:
       - run: ls -la vendor/aufgabe/solution-checker
       - run: ls -la vendor/aufgabe/solution-checker/input
       - name: Run test
-        run: bin/Regale "vendor/aufgabe/solution-checker/input/instance${{ matrix.num }}.json -"
+        run: bin/Regale "vendor/aufgabe/solution-checker/input/instance${{ matrix.num }}.json" -
 
   DotnetTest:
     name: Execute Dotnet test
