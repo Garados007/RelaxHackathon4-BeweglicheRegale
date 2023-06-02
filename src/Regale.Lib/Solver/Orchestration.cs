@@ -57,7 +57,9 @@ public sealed class Orchestration<TCost, TRouting>
         var anyValidStep = false;
         foreach (var (present, _, depot) in presents)
         {
-            var moves = routingFunc.GetMoves(primary, validator.MoveMap, spaceUsed, present, depot);
+            var moves = routingFunc.GetMoves(new RoutingArgs(
+                primary, validator.MoveMap, spaceUsed, present, depot
+            ));
             foreach (var (pos, dir) in moves)
             {
                 anyValidStep |= validator.Apply(pos, dir);
