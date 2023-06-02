@@ -62,7 +62,7 @@ class Program {
     }
 
     public static async Task SolveProblem (Problem problem, string file) {
-        Orchestration<MMCost, DummyRouter> orchestration = new Orchestration<MMCost, DummyRouter>(problem);
+        var orchestration = new Orchestration<MMCost, Solver.Routing.PresentSpaceRouting>(problem);
         var mapIter = orchestration.IterateSteps();
         await WriteSolutionAsync(mapIter, file);
     }
