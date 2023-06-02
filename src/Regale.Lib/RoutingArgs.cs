@@ -10,10 +10,12 @@ namespace Regale;
 /// </param>
 /// <param name="Present">The position of the present that should be moved.</param>
 /// <param name="Depot">The target of the present.</param>
+/// <param name="Spaces">The list of all available spaces.</param>
 public sealed record class RoutingArgs(
     Map Map,
     MoveMap CurrentMoves,
     SpaceUseMap SpaceUsed,
     Position Present,
-    Position Depot
+    Position Depot,
+    List<Position> Spaces
 );

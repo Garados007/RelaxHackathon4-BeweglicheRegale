@@ -11,7 +11,7 @@ public interface IRouting
     /// <returns>
     /// Some moves for the current present. If no moves are possible just return <see cref="Span.Empty" />.
     /// </returns>
-    ReadOnlySpan<(Position position, Direction direction)> GetMoves(
+    List<(Position position, Direction direction)> GetMoves(
         RoutingArgs args
     );
 }

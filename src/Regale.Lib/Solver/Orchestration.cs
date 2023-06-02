@@ -55,10 +55,14 @@ public sealed class Orchestration<TCost, TRouting>
         var spaceUsed = new SpaceUseMap(primary.Width, primary.Height);
         var validator = new Validation.MoveValidator(primary);
         var anyValidStep = false;
+        var spaces = primary.GetFields()
+            .Where(x => x.field == Field.None)
+            .Select(x => x.position)
+            .ToList();
         foreach (var (present, _, depot) in presents)
         {
             var moves = routingFunc.GetMoves(new RoutingArgs(
-                primary, validator.MoveMap, spaceUsed, present, depot
+                primary, validator.MoveMap, spaceUsed, present, depot, spaces
             ));
             foreach (var (pos, dir) in moves)
             {
