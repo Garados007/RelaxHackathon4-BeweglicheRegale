@@ -71,9 +71,9 @@ public class Map<T>
     private int GetOffset(Position position)
     {
         if (position.X < 0 || position.X >= Width)
-            throw new ArgumentOutOfRangeException(nameof(position), "invalid X coordinate");
+            throw new ArgumentOutOfRangeException(nameof(position), $"invalid X coordinate {position.X} (0 .. {Width - 1})");
         if (position.Y < 0 || position.Y >= Height)
-            throw new ArgumentOutOfRangeException(nameof(position), "invalid Y coordinate");
+            throw new ArgumentOutOfRangeException(nameof(position), $"invalid Y coordinate {position.Y} (0 .. {Height - 1})");
 
         return position.Y * Width + position.X;
     }
