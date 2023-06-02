@@ -22,6 +22,14 @@ public sealed class MoveValidator
         receivingMap = new(map.Width, map.Width);
     }
 
+    /// <summary>
+    /// Applies a move operation <paramref name="direction"/>  to the position <paramref name="start"/>.
+    /// If e.g. additional moves need to be made to "create space" this also effects other positions.
+    /// </summary>
+    /// <returns>
+    /// true: successful applied the operation, the map has changed<br/>
+    /// false: could not apply the operation, nothing changed
+    /// </returns>
     public bool Apply(Position start, Direction direction)
     {
         // check for valid directions
