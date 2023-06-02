@@ -1,3 +1,5 @@
+using Regale.Estimation;
+
 namespace Regale.Test.Solver;
 
 public sealed class DummyCost : ICost
