@@ -19,7 +19,7 @@ public sealed class TestPresentSpaceOrchestration
             Indented = true
         });
         w.WriteStartArray();
-        var success = false;
+        // var success = false;
         try
         {
             foreach (var map in orchestration.IterateSteps())
@@ -28,20 +28,21 @@ public sealed class TestPresentSpaceOrchestration
                 map.Save(w);
                 if (counter > 100)
                 {
-                    Console.WriteLine($"Abort at 100 steps");
-                    break;
+                    // Console.WriteLine($"Abort at 100 steps");
+                    throw new OverflowException("Abort at 100 steps");
+                    // break;
                 }
             }
-            Console.WriteLine($"Finished after {counter} steps");
-            success = true;
+            // Console.WriteLine($"Finished after {counter} steps");
+            // success = true;
         }
         finally
         {
-            if (!success)
-                Console.WriteLine($"Error at {counter} step");
-            w.WriteEndArray();
-            w.Flush();
-            Console.WriteLine(System.Text.Encoding.UTF8.GetString(m.ToArray()));
+            // if (!success)
+            //     Console.WriteLine($"Error at {counter} step");
+            // w.WriteEndArray();
+            // w.Flush();
+            // Console.WriteLine(System.Text.Encoding.UTF8.GetString(m.ToArray()));
         }
     }
 
