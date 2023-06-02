@@ -1,3 +1,5 @@
+using Regale.Estimation;
+
 namespace Regale.Solver;
 
 public sealed class Orchestration<TCost, TRouting>
