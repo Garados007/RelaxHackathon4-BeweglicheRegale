@@ -23,6 +23,20 @@ public class Map<T>
         data = new T[Width * Height];
     }
 
+    public void CopyTo(Map<T> target)
+    {
+        if (target.Width != Width)
+            throw new ArgumentException("width doesn't match", nameof(target));
+        if (target.Height != Height)
+            throw new ArgumentException("height doesn't match", nameof(target));
+        data.CopyTo(target.data);
+    }
+
+    public void Fill(T value)
+    {
+        data.Span.Fill(value);
+    }
+
     public void Init(T[][] data)
     {
         if (data.Length != Height)
