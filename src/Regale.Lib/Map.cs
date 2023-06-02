@@ -1,69 +1,38 @@
 namespace Regale;
 
-public class Map<T>
-    where T : struct
+public class Map : Map<Field>
 {
-    private readonly Memory<T> data;
-
-    public int Width { get; }
-
-    public int Height { get; }
-
-    public Map(int width, int height)
+    public Map(int width, int height) : base(width, height)
     {
-        if (width <= 0)
-            throw new ArgumentOutOfRangeException(nameof(width));
-        if (height <= 0)
-            throw new ArgumentOutOfRangeException(nameof(height));
-
-        Width = width;
-        Height = height;
-        data = new T[Width * Height];
     }
 
-    public T this[uint x, uint y]
+    /// <summary>
+    /// Extends the flow from a starting point into a direction until it reaches
+    /// a space. The returned list contains all positions including the starting
+    /// one but won't contain the position of the space. If the flow collides
+    /// with a wall this function returns null.
+    /// </summary>
+    /// <param name="start">the start of the flow</param>
+    /// <param name="direction">the direction to follow</param>
+    /// <returns></returns>
+    public List<Position>? ExtendDirection(Position start, Direction direction)
     {
-        get => this[new(x, y)];
-        set => this[new(x, y)] = value;
-    }
-
-    public T this[Position position]
-    {
-        get => data.Span[GetOffset(position)];
-        set => data.Span[GetOffset(position)] = value;
-    }
-
-    public Span<T> GetRow(uint y)
-    {
-        if (y >= Height)
-            throw new ArgumentOutOfRangeException(nameof(y));
-        var offset = ((int)y) * Width;
-        return data.Span.Slice(offset, Width);
-    }
-
-    private int GetOffset(Position position)
-    {
-        if (position.X >= Width)
-            throw new ArgumentOutOfRangeException(nameof(position), "X value is larger than width");
-        if (position.Y >= Height)
-            throw new ArgumentOutOfRangeException(nameof(position), "Y value is larger than height");
-
-        return (int)(position.Y * Width + position.X);
-    }
-
-    public IEnumerable<(T field, Position position)> GetFields()
-    {
-        uint x = 0;
-        uint y = 0;
-        for (int i = 0; i < data.Length; ++i)
+        var list = new List<Position>
         {
-            yield return (data.Span[i], new(x, y));
-            x++;
-            if (x >= Width)
-            {
-                x = 0;
-                y++;
-            }
+            start
+        };
+        var (dx, dy) = direction.GetDelta();
+        if (dx == 0 && dy == 0)
+            return list;
+
+        Position? target = start;
+        while ((target = GetTargetPosition(target.Value, dx, dy)) != null)
+        {
+            if (this[target.Value] == Field.None)
+                return list;
+            list.Add(target.Value);
         }
+        // collision with a wall
+        return null;
     }
 }
