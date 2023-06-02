@@ -17,11 +17,11 @@ public class MoveMap : Map<Direction>
         var indentOffset = 0;
         if (writer.Options.Indented)
         {
-            indentOffset = writer.CurrentDepth * 4 + 2;
+            Span<byte> nl = System.Text.Encoding.UTF8.GetBytes(Environment.NewLine);
+            indentOffset = writer.CurrentDepth * 4 + nl.Length;
             indent = new byte[indentOffset + sb.Capacity];
             indent.Fill((byte)' ');
-            indent[0] = (byte)'\r';
-            indent[1] = (byte)'\n';
+            nl.CopyTo(indent[..nl.Length]);
         }
         for (uint y = 0; y < Height; ++y)
         {
