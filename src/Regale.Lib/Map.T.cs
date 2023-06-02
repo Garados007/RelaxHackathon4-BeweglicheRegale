@@ -23,6 +23,19 @@ public class Map<T>
         data = new T[Width * Height];
     }
 
+    public void Init(T[][] data)
+    {
+        if (data.Length != Height)
+            throw new ArgumentException("height doesn't match", nameof(data));
+        for (int y = 0; y < Height; ++y)
+        {
+            if (data[y].Length != Width)
+                throw new ArgumentException($"width of row {y + 1} doesn't match", nameof(data));
+            for (int x = 0; x < Width; ++x)
+                this[(uint)x, (uint)y] = data[y][x];
+        }
+    }
+
     public T this[uint x, uint y]
     {
         get => this[new(x, y)];
