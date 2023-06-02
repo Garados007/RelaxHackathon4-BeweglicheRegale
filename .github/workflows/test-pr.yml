@@ -54,13 +54,19 @@ jobs:
           path: bin
       - name: Make binary executable
         run: chmod +x bin/Regale
-      - run: ls -la
-      - run: ls -la vendor
-      - run: ls -la vendor/aufgabe
-      - run: ls -la vendor/aufgabe/solution-checker
-      - run: ls -la vendor/aufgabe/solution-checker/input
+      - name: Copy input file to input directory
+        run: |
+          mkdir -p input
+          cp "vendor/aufgabe/solution-checker/input/instance${{ matrix.num }}.json" input/
       - name: Run test
-        run: bin/Regale "vendor/aufgabe/solution-checker/input/instance${{ matrix.num }}.json" -
+        run: bin/Regale "input/instance${{ matrix.num }}.json" "output/instance${{ matrix.num }}.json"
+      - name: Verify using provided checker
+        run: |
+          mkdir -p result
+          python vendor/aufgabe/solution-checker/solution_checker.py > result/res${{ matrix.num }}.txt
+          cat result/res${{ matrix.num }}.txt >> $GITHUB_STEP_SUMMARY
+          grep -q "Valid" result/res${{ matrix.num }}.txt
+          exit $?
 
   DotnetTest:
     name: Execute Dotnet test

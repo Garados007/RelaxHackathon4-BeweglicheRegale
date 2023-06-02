@@ -3,3 +3,6 @@ src/**/bin
 src/**/obj
 # dev stuff
 .vscode
+# ci stuff
+/input
+/output
