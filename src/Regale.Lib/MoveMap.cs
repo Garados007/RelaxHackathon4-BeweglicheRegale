@@ -19,17 +19,16 @@ public class MoveMap : Map<Direction>
         // cleanup target map
         target.Fill(Field.None);
         // iterate all positions and move data
-        for (uint y = 0; y < Height; ++y)
+        for (int y = 0; y < Height; ++y)
         {
             var row = GetRow(y);
-            for (uint x = 0; x < Width; ++x)
+            for (int x = 0; x < Width; ++x)
             {
                 var dir = row[(int)x];
                 var sourceData = start[x, y];
                 if (dir == Direction.None && sourceData == Field.None)
                     continue;
-                var (dx, dy) = dir.GetDelta();
-                var targetPos = GetTargetPosition(new(x, y), dx, dy);
+                var targetPos = GetTargetPosition(new(x, y), dir.GetDelta());
                 if (targetPos is null)
                     continue;
                 target[targetPos.Value] = start[x, y];
@@ -51,7 +50,7 @@ public class MoveMap : Map<Direction>
             indent.Fill((byte)' ');
             nl.CopyTo(indent[..nl.Length]);
         }
-        for (uint y = 0; y < Height; ++y)
+        for (int y = 0; y < Height; ++y)
         {
             var row = GetRow(y);
             sb.Clear();

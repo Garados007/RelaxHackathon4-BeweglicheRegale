@@ -32,12 +32,12 @@ public sealed class MoveValidator
         if (positions is null)
             return false;
         // get delta
-        var (dx, dy) = direction.GetDelta();
+        var delta = direction.GetDelta();
         // check if all positions are allowed
         Position? target = null;
         foreach (var pos in positions)
         {
-            target = receivingMap.GetTargetPosition(pos, dx, dy);
+            target = receivingMap.GetTargetPosition(pos, delta);
             if (target is null)
                 return false;
             var receive = receivingMap[target.Value];

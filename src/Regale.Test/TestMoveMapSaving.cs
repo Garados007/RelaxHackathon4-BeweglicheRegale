@@ -11,7 +11,7 @@ public class TestMoveMapSaving
         var map = new MoveMap(dirs[0].Length, dirs.Length);
         for (int y = 0; y < dirs.Length; ++y)
             for (int x = 0; x < dirs[y].Length; ++x)
-                map[(uint)x, (uint)y] = dirs[y][x];
+                map[x, y] = dirs[y][x];
         using var m = new MemoryStream();
         using var w = new Utf8JsonWriter(m, new JsonWriterOptions
         {

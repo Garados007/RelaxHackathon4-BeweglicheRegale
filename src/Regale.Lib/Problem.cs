@@ -48,19 +48,19 @@ public class Problem
                 switch (lines[y].Span[x].Value)
                 {
                     case 128230: // 📦
-                        map[(uint)x, (uint)y] = Field.Package;
+                        map[x, y] = Field.Package;
                         break;
                     case 127873: // 🎁
-                        map[(uint)x, (uint)y] = Field.Present;
+                        map[x, y] = Field.Present;
                         break;
                     case 129000: // 🟨
                         break;
                     case 128587: // 🙋
-                        depots.Add(new((uint)x, (uint)y));
+                        depots.Add(new(x, y));
                         break;
                     case 128119: // 👷
-                        depots.Add(new((uint)x, (uint)y));
-                        map[(uint)x, (uint)y] = Field.Package;
+                        depots.Add(new(x, y));
+                        map[x, y] = Field.Package;
                         break;
                     default:
                         return new Error<string>($"invalid character '{lines[y].Span[x]}' ({lines[y].Span[x].Value}) at {x+1}:{y+1}");

@@ -21,12 +21,12 @@ public class Map : Map<Field>
         {
             start
         };
-        var (dx, dy) = direction.GetDelta();
-        if (dx == 0 && dy == 0)
+        var delta = direction.GetDelta();
+        if (delta == Position.Zero)
             return list;
 
         Position? target = start;
-        while ((target = GetTargetPosition(target.Value, dx, dy)) != null)
+        while ((target = GetTargetPosition(target.Value, delta)) != null)
         {
             if (this[target.Value] == Field.None)
                 return list;
