@@ -63,10 +63,23 @@ jobs:
       - name: Verify using provided checker
         run: |
           mkdir -p result
-          python vendor/aufgabe/solution-checker/solution_checker.py > result/res${{ matrix.num }}.txt
-          cat result/res${{ matrix.num }}.txt >> $GITHUB_STEP_SUMMARY
+          python vendor/aufgabe/solution-checker/solution_checker.py \
+            | tee result/res${{ matrix.num }}.txt \
+            | tee -a $GITHUB_STEP_SUMMARY
           grep -q "Valid" result/res${{ matrix.num }}.txt
           exit $?
+      - name: Upload output artefact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-instance-output
+          path: output
+      - name: Upload result artefact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-instance-result
+          path: result
 
   DotnetTest:
     name: Execute Dotnet test
