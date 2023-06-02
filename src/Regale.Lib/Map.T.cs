@@ -101,8 +101,7 @@ public class Map<T>
     /// contained within this map it is returned. Otherwise, it returns null.
     /// </summary>
     /// <param name="start"></param>
-    /// <param name="dx"></param>
-    /// <param name="dy"></param>
+    /// <param name="delta"></param>
     /// <returns></returns>
     public Position? GetTargetPosition(Position start, Position delta)
     {

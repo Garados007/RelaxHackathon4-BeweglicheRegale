@@ -92,7 +92,7 @@ public sealed class Orchestration<TCost, TRouting>
             var row = primary.GetRow(y);
             for (int x = 0; x < primary.Width; ++x)
             {
-                if (row[(int)x] != Field.Present)
+                if (row[x] != Field.Present)
                     continue;
                 var (cost, depot) = costFunc.GetCost(primary, depots.Span, new(x, y));
                 list.Add((new(x, y), cost, depot));
