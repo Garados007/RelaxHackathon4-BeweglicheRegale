@@ -1,0 +1,30 @@
+name: Main
+run-name: Create new Release ${{ github.sha }}
+on:
+  push:
+    branches:
+      - main
+jobs:
+
+  RunPR:
+    name: Run PR pipeline
+    uses: ./.github/workflows/test-pr.yml
+
+  DeployGithubPages:
+    name: Deploy Github Pages
+    needs:
+      - RunPR
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: coverage-report
+

@@ -21,14 +21,14 @@ public class Map<T>
         data = new T[Width * Height];
     }
 
-    public void CopyTo(Map<T> target)
-    {
-        if (target.Width != Width)
-            throw new ArgumentException("width doesn't match", nameof(target));
-        if (target.Height != Height)
-            throw new ArgumentException("height doesn't match", nameof(target));
-        data.CopyTo(target.data);
-    }
+    // public void CopyTo(Map<T> target)
+    // {
+    //     if (target.Width != Width)
+    //         throw new ArgumentException("width doesn't match", nameof(target));
+    //     if (target.Height != Height)
+    //         throw new ArgumentException("height doesn't match", nameof(target));
+    //     data.CopyTo(target.data);
+    // }
 
     public void Fill(T value)
     {
@@ -97,14 +97,14 @@ public class Map<T>
         }
     }
 
-    public IEnumerable<(Memory<T> row, int y)> GetRows()
-    {
-        for (int y = 0; y < Height; ++y)
-        {
-            var offset = y * Width;
-            yield return (data.Slice(offset, Width), y);
-        }
-    }
+    // public IEnumerable<(Memory<T> row, int y)> GetRows()
+    // {
+    //     for (int y = 0; y < Height; ++y)
+    //     {
+    //         var offset = y * Width;
+    //         yield return (data.Slice(offset, Width), y);
+    //     }
+    // }
 
     /// <summary>
     /// Adds the delta to the start position. If the resulting position is
