@@ -19,20 +19,15 @@ public class MoveMap : Map<Direction>
         // cleanup target map
         target.Fill(Field.None);
         // iterate all positions and move data
-        for (int y = 0; y < Height; ++y)
+        foreach (var (sourceData, pos) in start.GetFields())
         {
-            var row = GetRow(y);
-            for (int x = 0; x < Width; ++x)
-            {
-                var dir = row[(int)x];
-                var sourceData = start[x, y];
-                if (dir == Direction.None && sourceData == Field.None)
-                    continue;
-                var targetPos = GetTargetPosition(new(x, y), dir.GetDelta());
-                if (targetPos is null)
-                    continue;
-                target[targetPos.Value] = start[x, y];
-            }
+            var dir = this[pos];
+            if (dir == Direction.None && sourceData == Field.None)
+                continue;
+            var targetPos = GetTargetPosition(pos, dir.GetDelta());
+            if (targetPos is null)
+                continue;
+            target[targetPos.Value] = start[pos];
         }
     }
 

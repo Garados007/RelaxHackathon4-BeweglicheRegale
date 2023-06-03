@@ -6,6 +6,15 @@ namespace Regale.Test.Validation;
 
 public class TestMoveValidator
 {
+    private static void CheckEqual<T>(Map<T> expected, Map<T> actual)
+        where T : struct
+    {
+        foreach (var (field, pos) in expected.GetFields())
+        {
+            Assert.AreEqual(field, actual[pos], $"At position ({pos})");
+        }
+    }
+
     [Test]
     public void TestSimpleFlows()
     {
@@ -25,16 +34,129 @@ public class TestMoveValidator
         Assert.IsFalse(validator.Apply(new(2, 4), Direction.Up)); // collides in between
         Assert.IsFalse(validator.Apply(new(4, 4), Direction.Up)); // collides with target
         // verify directions
-        for (int y = 0; y < 2; ++y)
-            for (int x = 0; x < 5; ++x)
-                Assert.AreEqual(Direction.None, validator.MoveMap[x, y]);
-        Assert.AreEqual(Direction.None,  validator.MoveMap[0, 2]);
-        Assert.AreEqual(Direction.Right, validator.MoveMap[1, 2]);
-        Assert.AreEqual(Direction.Right, validator.MoveMap[2, 2]);
-        Assert.AreEqual(Direction.Right, validator.MoveMap[3, 2]);
-        Assert.AreEqual(Direction.None,  validator.MoveMap[4, 2]);
-        for (int y = 3; y < 4; ++y)
-            for (int x = 0; x < 5; ++x)
-                Assert.AreEqual(Direction.None, validator.MoveMap[x, y]);
+        var expected = new MoveMap(5, 5);
+        expected.Init(new[]
+        {
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.Right, Direction.Right, Direction.Right, Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+        });
+        CheckEqual(expected, validator.MoveMap);
+    }
+
+    [Test]
+    public void TestJunktionTermination()
+    {
+        var map = new Map(5, 5);
+        map.Init(new[]
+        {
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.None    },
+            new[] { Field.Package, Field.None,    Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+        });
+        // apply move
+        var validator = new MoveValidator(map);
+        Assert.IsTrue(validator.Apply(new(1, 2), Direction.Right)); // normal flow
+        Assert.IsFalse(validator.Apply(new(1, 0), Direction.Down)); // collides with start
+        // verify directions
+        var expected = new MoveMap(5, 5);
+        expected.Init(new[]
+        {
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.Right, Direction.Right, Direction.Right, Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+        });
+        CheckEqual(expected, validator.MoveMap);
+    }
+
+    [Test]
+    public void TestJunktionTermination2()
+    {
+        var map = new Map(5, 5);
+        map.Init(new[]
+        {
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.None,    Field.Package, Field.Package, Field.None    },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+        });
+        // apply move
+        var validator = new MoveValidator(map);
+        Assert.IsTrue(validator.Apply(new(1, 0), Direction.Down)); // normal flow
+        Assert.IsFalse(validator.Apply(new(1, 2), Direction.Right)); // collides with start
+        // verify directions
+        var expected = new MoveMap(5, 5);
+        expected.Init(new[]
+        {
+            new[] { Direction.None, Direction.Down,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.Down,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+        });
+        CheckEqual(expected, validator.MoveMap);
+    }
+
+    [Test]
+    public void TestMovingSpace()
+    {
+        var map = new Map(5, 5);
+        map.Init(new[]
+        {
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.None,    Field.Package, Field.Package, Field.None    },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+        });
+        // apply move
+        var validator = new MoveValidator(map);
+        Assert.IsFalse(validator.Apply(new(1, 2), Direction.Right)); // moves a space somewhere
+        // verify directions
+        var expected = new MoveMap(5, 5);
+        expected.Init(new[]
+        {
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+        });
+        CheckEqual(expected, validator.MoveMap);
+    }
+
+    [Test]
+    public void TestMovingSpace2()
+    {
+        var map = new Map(5, 5);
+        map.Init(new[]
+        {
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.None,    Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.None,    Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+        });
+        // apply move
+        var validator = new MoveValidator(map);
+        Assert.IsFalse(validator.Apply(new(1, 2), Direction.Down)); // moves a space somewhere
+        // verify directions
+        var expected = new MoveMap(5, 5);
+        expected.Init(new[]
+        {
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+        });
+        CheckEqual(expected, validator.MoveMap);
     }
 }
