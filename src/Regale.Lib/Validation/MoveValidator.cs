@@ -43,6 +43,12 @@ public sealed class MoveValidator
         var delta = direction.GetDelta();
         // check if all positions are allowed
         Position? target = null;
+        if (positions.Count > 0)
+        {
+            var receive = receivingMap[positions[0]];
+            if (receive != Direction.None && receive != direction)
+                return false;
+        }
         foreach (var pos in positions)
         {
             target = receivingMap.GetTargetPosition(pos, delta);
