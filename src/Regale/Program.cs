@@ -46,7 +46,12 @@ class Program
             var files = Directory.EnumerateFiles(filePath, "*.json");
             await System.Threading.Tasks.Parallel.ForEachAsync(
                 files, async (file, _) =>
-                    await SolveFile(file, FromFileNameToSolutionName(file))
+                {
+                    var target = args.Length == 2 ?
+                        Path.Combine(args[1], Path.GetFileName(file)) :
+                        FromFileNameToSolutionName(file);
+                    await SolveFile(file, target);
+                }
             );
         }
         else
