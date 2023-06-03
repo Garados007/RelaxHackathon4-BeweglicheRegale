@@ -45,6 +45,8 @@ public sealed class MoveValidator
         Position? target = null;
         if (positions.Count > 0)
         {
+            if (Map[positions[0]] == Field.None)
+                return false;
             var receive = receivingMap[positions[0]];
             if (receive != Direction.None && receive != direction)
                 return false;

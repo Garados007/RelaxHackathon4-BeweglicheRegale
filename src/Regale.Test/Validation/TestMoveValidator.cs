@@ -54,8 +54,8 @@ public class TestMoveValidator
         {
             new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
             new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
-            new[] { Field.Package, Field.None,    Field.Package, Field.Package, Field.None    },
-            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.None    },
+            new[] { Field.Package, Field.None,    Field.Package, Field.Package, Field.Package },
             new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
         });
         // apply move
@@ -97,6 +97,62 @@ public class TestMoveValidator
         {
             new[] { Direction.None, Direction.Down,  Direction.None,  Direction.None,  Direction.None, },
             new[] { Direction.None, Direction.Down,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+        });
+        CheckEqual(expected, validator.MoveMap);
+    }
+
+    [Test]
+    public void TestMovingSpace()
+    {
+        var map = new Map(5, 5);
+        map.Init(new[]
+        {
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.None,    Field.Package, Field.Package, Field.None    },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+        });
+        // apply move
+        var validator = new MoveValidator(map);
+        Assert.IsFalse(validator.Apply(new(1, 2), Direction.Right)); // moves a space somewhere
+        // verify directions
+        var expected = new MoveMap(5, 5);
+        expected.Init(new[]
+        {
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+        });
+        CheckEqual(expected, validator.MoveMap);
+    }
+
+    [Test]
+    public void TestMovingSpace2()
+    {
+        var map = new Map(5, 5);
+        map.Init(new[]
+        {
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.None,    Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.None,    Field.Package, Field.Package, Field.Package },
+            new[] { Field.Package, Field.Package, Field.Package, Field.Package, Field.Package },
+        });
+        // apply move
+        var validator = new MoveValidator(map);
+        Assert.IsFalse(validator.Apply(new(1, 2), Direction.Down)); // moves a space somewhere
+        // verify directions
+        var expected = new MoveMap(5, 5);
+        expected.Init(new[]
+        {
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
+            new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
             new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
             new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },
             new[] { Direction.None, Direction.None,  Direction.None,  Direction.None,  Direction.None, },

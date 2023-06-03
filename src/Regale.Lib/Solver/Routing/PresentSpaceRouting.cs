@@ -95,6 +95,8 @@ public class PresentSpaceRouting : IRouting
         {
             if (!CheckIfSpaceCanBeMoved(args, space, target, newPresentLocation).TryPickT0(out var result, out _))
                 continue;
+            if (args.Map[result.intermediate] == Field.None)
+                continue; // do not move spaces!
             var cost = (result.steps, Functions.ManhattanMetric(space, target));
             if (optimum is null || optimum.Value.cost.CompareTo(cost) > 0)
                 optimum = ((space, result.intermediate, result.steps), cost);
