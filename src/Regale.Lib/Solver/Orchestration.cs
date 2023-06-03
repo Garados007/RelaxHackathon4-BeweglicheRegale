@@ -44,25 +44,25 @@ public sealed class Orchestration<TCost, TRouting>
         // stream.SetLength(stream.Position);
     }
 
-#if DEBUG
-    private long stepCounter = 0;
-    public bool printDebugInfo = false;
-#endif
+// #if DEBUG
+//     private long stepCounter = 0;
+//     public bool printDebugInfo = false;
+// #endif
 
     public MoveMap? IterateStep()
     {
         // get presents
         var presents = GetPresents();
-#if DEBUG
-        stepCounter++;
-        if (printDebugInfo)
-        {
-            if (presents.Count == 0)
-                Console.WriteLine($"Orchestration: Step={stepCounter}; Sum=0; Max=0");
-            else
-                Console.WriteLine($"Orchestration: Step={stepCounter}; Sum={presents.Sum(x => x.cost)}; Max={presents.Max(x => x.cost)}");
-        }
-#endif
+// #if DEBUG
+//         stepCounter++;
+//         if (printDebugInfo)
+//         {
+//             if (presents.Count == 0)
+//                 Console.WriteLine($"Orchestration: Step={stepCounter}; Sum=0; Max=0");
+//             else
+//                 Console.WriteLine($"Orchestration: Step={stepCounter}; Sum={presents.Sum(x => x.cost)}; Max={presents.Max(x => x.cost)}");
+//         }
+// #endif
         if (presents.Count == 0)
             return null;
 
