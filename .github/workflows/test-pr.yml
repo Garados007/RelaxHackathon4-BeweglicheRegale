@@ -5,6 +5,7 @@ on:
     types:
       - opened
       - synchronize
+  workflow_call:
   push:
     branches:
       - main
@@ -144,9 +145,9 @@ jobs:
         run: |
           reportgenerator \
             "-reports:**/coverage.cobertura.xml" \
-            -targetdir:report
-            "-reporttypes:Html;Badges"
-            "-title:Relaxdays Hackathon 4 - Bewegliche Regale"
+            -targetdir:report \
+            "-reporttypes:Html;Badges" \
+            "-title:Relaxdays Hackathon 4 - Bewegliche Regale" \
             -tag:$(git rev-parse --short HEAD)
       - name: Upload Report artefacts
         uses: actions/upload-artifact@v3
@@ -154,22 +155,3 @@ jobs:
           name: coverage-report
           path: |
             report
-
-  DeployGithubPages:
-    name: Deploy Github Pages
-    needs:
-      - GenerateReports
-    runs-on: ubuntu-latest
-    if: github.ref_name == 'main'
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to Github Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
-        with:
-          artifact_name: coverage-report
