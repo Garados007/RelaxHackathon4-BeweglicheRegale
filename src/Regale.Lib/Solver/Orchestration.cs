@@ -24,24 +24,24 @@ public sealed class Orchestration<TCost, TRouting>
 
     public IEnumerable<MoveMap> IterateSteps()
     {
-        using var stream = new FileStream("steps.json", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
-        using var writer = new StreamWriter(stream);
-        var step = 0;
-        writer.Write("{");
+        // using var stream = new FileStream("steps.json", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
+        // using var writer = new StreamWriter(stream);
+        // var step = 0;
+        // writer.Write("{");
         MoveMap? map;
         while ((map = IterateStep()) is not null)
         {
-            if (step == 0)
-                writer.WriteLine();
-            else writer.WriteLine(",");
-            writer.Write($"  \"{++step}\": ");
-            primary.Save(writer, depots.Span);
+            // if (step == 0)
+            //     writer.WriteLine();
+            // else writer.WriteLine(",");
+            // writer.Write($"  \"{++step}\": ");
+            // primary.Save(writer, depots.Span);
             yield return map;
         }
-        writer.WriteLine();
-        writer.WriteLine("}");
-        writer.Flush();
-        stream.SetLength(stream.Position);
+        // writer.WriteLine();
+        // writer.WriteLine("}");
+        // writer.Flush();
+        // stream.SetLength(stream.Position);
     }
 
 #if DEBUG
