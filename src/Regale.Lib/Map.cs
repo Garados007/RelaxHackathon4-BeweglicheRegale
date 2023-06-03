@@ -35,4 +35,38 @@ public class Map : Map<Field>
         // collision with a wall
         return null;
     }
+
+    public void Save(TextWriter writer, ReadOnlySpan<Position> depots)
+    {
+        writer.Write("[");
+        foreach (var (row, y) in GetRows())
+        {
+            if (y == 0)
+                writer.WriteLine();
+            else writer.WriteLine(",");
+            writer.Write("    \"");
+            int x = 0;
+            foreach (var field in row.Span)
+            {
+                var tile = field switch
+                {
+                    Field.Package => ".",
+                    Field.Present => "$",
+                    _ => "#",
+                };
+                var pos = new Position(x, y);
+                foreach (var depot in depots)
+                    if (depot == pos)
+                    {
+                        tile = field == Field.None ? "O" : "o";
+                        break;
+                    }
+                writer.Write(tile);
+                x++;
+            }
+            writer.Write("\"");
+        }
+        writer.WriteLine();
+        writer.Write("  ]");
+    }
 }

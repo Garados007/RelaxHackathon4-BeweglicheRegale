@@ -97,6 +97,15 @@ public class Map<T>
         }
     }
 
+    public IEnumerable<(Memory<T> row, int y)> GetRows()
+    {
+        for (int y = 0; y < Height; ++y)
+        {
+            var offset = y * Width;
+            yield return (data.Slice(offset, Width), y);
+        }
+    }
+
     /// <summary>
     /// Adds the delta to the start position. If the resulting position is
     /// contained within this map it is returned. Otherwise, it returns null.
