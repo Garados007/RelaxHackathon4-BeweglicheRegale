@@ -6,9 +6,6 @@ on:
       - opened
       - synchronize
   workflow_call:
-  push:
-    branches:
-      - main
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true

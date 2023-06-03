@@ -22,9 +22,16 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Download Coverage Report
+        uses: actions/download-artifact@v3
+        continue-on-error: false
+        with:
+          name: coverage-report
+      - name: Upload artifacts for Github Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: report
       - name: Deploy to Github Pages
         id: deployment
         uses: actions/deploy-pages@v2
-        with:
-          artifact_name: coverage-report
 
